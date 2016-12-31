@@ -23,14 +23,14 @@ namespace MazeGenerator
             _height = maze.Count;
             _maze = maze;
             _solutionPath = new List<int[]> { new[] { 0, 0 } };
-            doNextStep = false;
-            finished = false;
+            _doNextStep = false;
+            _finished = false;
             WalkTheMaze(0, 0);
             return _solutionPath;
         }
 
-        private bool doNextStep = false;
-        private bool finished = false;
+        private bool _doNextStep = false;
+        private bool _finished = false;
 
         private void WalkTheMaze(int x, int y)
         {
@@ -42,7 +42,7 @@ namespace MazeGenerator
 
             foreach (int[] neighbour in neighbours)
             {
-                if (finished)
+                if (_finished)
                 {
                     break;
                 }
@@ -56,45 +56,40 @@ namespace MazeGenerator
                 if (neighbour[0] < x && neigbourCell.BottomWall == 0)
                 {
                     _solutionPath.Add(new[] { neighbour[0], neighbour[1] });
-                    doNextStep = true;
+                    _doNextStep = true;
                 }
 
                 if (neighbour[0] > x && startCell.BottomWall == 0)
                 {
                     _solutionPath.Add(new[] { neighbour[0], neighbour[1] });
-                    doNextStep = true;
+                    _doNextStep = true;
                 }
 
                 if (neighbour[1] > y && startCell.RightWall == 0)
                 {
                     _solutionPath.Add(new[] { neighbour[0], neighbour[1] });
-                    doNextStep = true;
+                    _doNextStep = true;
                 }
 
                 if (neighbour[1] < y && neigbourCell.RightWall == 0)
                 {
                     _solutionPath.Add(new[] { neighbour[0], neighbour[1] });
-                    doNextStep = true;
+                    _doNextStep = true;
                 }
 
-                if (neighbour[0] == _height - 1 && neighbour[1] == _height - 1 && doNextStep == true)
+                if (neighbour[0] == _height - 1 && neighbour[1] == _height - 1 && _doNextStep == true)
                 {
-                    finished = true;
+                    _finished = true;
                 }
 
-                if (doNextStep == true)
+                if (!_doNextStep) continue;
+
+                _doNextStep = false;
+                WalkTheMaze(neighbour[0], neighbour[1]);
+                if (_finished == false)
                 {
-
-
-
-                    doNextStep = false;
-                    WalkTheMaze(neighbour[0], neighbour[1]);
-                    if (finished == false)
-                    {
-                        _solutionPath.RemoveAt(_solutionPath.Count - 1);
-                    }
+                    _solutionPath.RemoveAt(_solutionPath.Count - 1);
                 }
-
             }
         }
     }
