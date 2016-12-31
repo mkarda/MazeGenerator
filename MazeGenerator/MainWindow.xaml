@@ -19,10 +19,5 @@
             <Button x:Name="SolveButton" Content="Solve It" Width="75" Margin="0,20,0,0" Click="SolveButton_Click" IsEnabled="False"/>
         </StackPanel>
     </StackPanel>
-
-
-    <!--    <Grid>-->
-    <!--        -->
-    <!--    </Grid>-->
 </Window>
 

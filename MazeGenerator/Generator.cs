@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MazeGenerator
 {
@@ -11,20 +7,17 @@ namespace MazeGenerator
     {
         private List<List<Cell>> _maze;
         private Random _random;
-        private int _height;
+        private static int _height;
         public List<List<Cell>> GenerateMaze(int height)
         {
             _random = new Random();
             _height = height;
-
-
-            _maze = GenerateDefaultMaze(_height);
-
-
+            
+            _maze = GenerateDefaultMaze();
+            
             int startX = _random.Next(_height);
             int startY = _random.Next(_height);
-
-
+            
             WalkMaze(startX, startY);
 
             return _maze;
@@ -46,16 +39,16 @@ namespace MazeGenerator
 
                 Cell neigbourCell = _maze[neighbour[0]][neighbour[1]];
 
-                if (neighbour[0] < x) // w gore
+                if (neighbour[0] < x)
                     neigbourCell.BottomWall = 0;
 
-                if (neighbour[0] > x) // w dol
+                if (neighbour[0] > x)
                     startCell.BottomWall = 0;
 
-                if (neighbour[1] > y)  // w prawo
+                if (neighbour[1] > y)
                     startCell.RightWall = 0;
 
-                if (neighbour[1] < y) // w lewo
+                if (neighbour[1] < y)
                     neigbourCell.RightWall = 0;
 
                 WalkMaze(neighbour[0], neighbour[1]);
@@ -78,13 +71,13 @@ namespace MazeGenerator
         }
 
 
-        private static List<List<Cell>> GenerateDefaultMaze(int height)
+        private static List<List<Cell>> GenerateDefaultMaze()
         {
             List<List<Cell>> maze = new List<List<Cell>>();
-            for (int i = 0; i < height; i++)
+            for (int i = 0; i < _height; i++)
             {
                 List<Cell> row = new List<Cell>();
-                for (int j = 0; j < height; j++)
+                for (int j = 0; j < _height; j++)
                 {
                     Cell cell = new Cell(false, 1, 1);
                     row.Add(cell);
