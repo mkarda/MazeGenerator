@@ -19,21 +19,25 @@ namespace MazeGenerator
 
         public Rectangle CreateBorder(double height)
         {
-            Rectangle r = new Rectangle();
-            r.Height = height;
-            r.Width = height;
-            r.Stroke = new SolidColorBrush(Colors.Black);
-            r.StrokeThickness = 1;
+            Rectangle r = new Rectangle
+            {
+                Height = height,
+                Width = height,
+                Stroke = new SolidColorBrush(Colors.Black),
+                StrokeThickness = 1
+            };
 
             return r;
         }
 
         public Ellipse CreateEllipse(double size, Color color, double left,  double top)
         {
-            Ellipse ellipse = new Ellipse();
-            ellipse.Height = size;
-            ellipse.Width = size;
-            ellipse.Fill = new SolidColorBrush(color);
+            Ellipse ellipse = new Ellipse
+            {
+                Height = size,
+                Width = size,
+                Fill = new SolidColorBrush(color)
+            };
             Canvas.SetLeft(ellipse, left);
             Canvas.SetTop(ellipse, top);
 

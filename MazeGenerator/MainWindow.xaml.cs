@@ -14,16 +14,16 @@ namespace MazeGenerator
         private List<List<Cell>> _maze;
         private double _cellsize;
         private readonly GraphicFactory _graphicFactory;
+        private readonly MazeDrawer _mazeDrawer;
 
         public MainWindow()
         {
             InitializeComponent();
+            _mainCanvas = MainCanvas;
             _mazeGenerator = new Generator();
             _mazeSolver = new MazeSolver();
             _graphicFactory = new GraphicFactory();
-
-
-            _mainCanvas = MainCanvas;
+            _mazeDrawer = new MazeDrawer(_mainCanvas, _graphicFactory);
         }
 
         private void DoIt(int size)
@@ -32,36 +32,11 @@ namespace MazeGenerator
 
             _maze = _mazeGenerator.GenerateMaze(size);
 
+            _cellsize = MainCanvas.Height / _maze.Count;
+            _mazeDrawer.DrawTheMaze(_maze);
 
-            var mainCanvasHeight = MainCanvas.Height;
-
-            _cellsize = mainCanvasHeight / _maze.Count;
-
-
-            AddBorder(mainCanvasHeight);
-
-            DrawTheMAze();
-
-            CreateStartAndStop(_cellsize, mainCanvasHeight);
             SolveButton.IsEnabled = true;
 
-        }
-
-        private void DrawTheMAze()
-        {
-            for (int i = 0; i < _maze.Count; i++)
-            {
-                for (int j = 0; j < _maze[i].Count; j++)
-                {
-                    Cell cell = _maze[i][j];
-
-                    if (cell.RightWall == 1)
-                        DrawRightWall(_cellsize, i, j);
-
-                    if (cell.BottomWall == 1)
-                        DrawBottomLine(_cellsize, i, j);
-                }
-            }
         }
 
         private void CreateStartAndStop(double cellsize, double mainCanvasHeight)
@@ -71,34 +46,6 @@ namespace MazeGenerator
             
             Ellipse stopEl = _graphicFactory.CreateEllipse(cellsize, Colors.CornflowerBlue, mainCanvasHeight - cellsize, mainCanvasHeight - cellsize);
             MainCanvas.Children.Add(stopEl);
-        }
-
-        private void DrawBottomLine(double cellsize, int j, int i)
-        {
-            Line line = _graphicFactory.CreateLine();
-
-            line.Y1 = cellsize + j * cellsize;
-            line.Y2 = cellsize + j * cellsize;
-            line.X1 = i * cellsize;
-            line.X2 = cellsize + i * cellsize;
-            _mainCanvas.Children.Add(line);
-        }
-
-        private void DrawRightWall(double cellsize, int i, int j)
-        {
-            Line line = _graphicFactory.CreateLine();
-
-            line.X1 = cellsize + j * cellsize;
-            line.X2 = cellsize + j * cellsize;
-            line.Y1 = i * cellsize;
-            line.Y2 = cellsize + i * cellsize;
-            _mainCanvas.Children.Add(line);
-        }
-
-        private void AddBorder(double mainCanvasHeight)
-        {
-            Rectangle rect = _graphicFactory.CreateBorder(mainCanvasHeight);
-            MainCanvas.Children.Add(rect);
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
